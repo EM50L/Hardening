@@ -1,0 +1,22 @@
+#!/usr/bin/python
+import socket
+import os
+
+puerto  = 23 #23 puerto telnet
+
+honey_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+honey_socket.bind( ('', puerto) )
+honey_socket.listen( 1 )
+print 'Honeypot a la escucha puerto: ', puerto
+
+while True:
+    conexion_entrante,info_conexion = honey_socket.accept()
+    conexion_entrante.send('Ups... te has equivocado esto es un honeypot\r\n')
+    conexion_entrante.close()
+    print "honeypot conexion desde " , info_conexion[0]  
+    #os.system("logger -p auth.info honeypot conexion desde "+ info_conexion[0])
+    #os.system("iptables -A INPUT -s " + info_conexion[0] + " -j DROP ")
+    os.system("fail2ban-client set ssh banip "+info_conexion[0])
+
+honey_socket.close()
+print 'Fin programa!'

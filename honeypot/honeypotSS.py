@@ -16,10 +16,13 @@ while True:
     except socket.error, e:
 	    print "honeypotSS2 error en socket:", e, "=> nmap -ST", info_conexion[0]
     conexion_entrante.close()
-    print "honeypot conexion desde " , info_conexion[0]  
+    print "honeypot conexion desde " , info_conexion[0]
+	
+    # Aqui decides que quieres hacer con los datos de la ip capturada.
+    # ej Registrar avisar , banear .....
     #os.system("logger -p auth.info honeypot conexion desde "+ info_conexion[0])
     #os.system("iptables -A INPUT -s " + info_conexion[0] + " -j DROP ")
-    #os.system("fail2ban-client set ssh banip "+info_conexion[0])
+    os.system("fail2ban-client set ssh banip "+info_conexion[0])
     #os.system("curl 'http://honeymap_server/ipban?ip="+info_conexion[0]+"&m=honeypot'&")#ojo con los &
     #os.system("echo "+info_conexion[0]+" > /dev/udp/honeymap_server/1234")
 
